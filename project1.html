@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jerome's Portfolio</title>
+
+    <!-- update these with your own fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,900|Source+Sans+Pro:300,900&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+    <body>
+      <header>
+        <div class="logo">
+          <img src="img/97a497c225d27f91f4320c0b23d14852-sticker.png" alt="logo">
+        </div>
+        <button class="nav-toggle" aria-label="toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+        <nav class="nav">
+          <ul class="nav__list">
+            <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+            <li class="nav__item"><a href="index.html#about" class="nav__link">About me</a></li>
+            <li class="nav__item"><a href="index.html#work" class="nav__link">My Work</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <!-- Introduction -->
+      <section class="intro" id="home">
+        <h1 class="section__title section__title--intro">
+          Data driven demand <strong> forecasting </strong>
+        </h1>
+        <p class="section__subtitle section__subtitle--intro">Time series </p>
+        <img src="img/ASTAR.png" alt="Project cover pic" class="intro__img">
+      </section>
+
+      <div class="portfolio-item-individual">
+        <p>
+          Demand forecasting using the appropriate models whether by statistical
+           or deep learning methods, have the potential to help companies reduce
+           downtime and maximise profits. However, forecasting demand for products
+           such as spare parts that do not follow trends, seasonality or even rarely
+           exhibit non-zero demand, may be extremely challenging to forecast.
+           In this project, we will explore the possibility of deep learning,
+           particularly, the Long Short-Term Memory (LSTM) with Ensemble Empirical
+            Mode Decomposition (EEMD) in the forecasting of spare parts demand.
+            We also observed that changing the LSTM unit with another variant
+            called the Gated Recurrent Unit (GRU) performed similarly but changing
+            the window size in which the model considers for prediction might have a bigger
+            impact on the performance of the model.
+        </p>
+          <img src="img/Picture 1.png" alt="Flowchart of model">
+        <p> The diagram above depicts the high level idea of how the
+        spare parts demand data can be decomposed using EEMD to its intrinic mode functions (IMFs)
+      before training the LSTM model. </p>
+
+        <a href="Poster.pdf" alt="" class="social-list__link">Poster</a>
+
+      </div>
+
+
+
+        <!-- Footer -->
+        <footer class="footer">
+          <a href="mailto:e0538259@u.nus.edu" class="footer-link">e0538259@u.nus.edu</a>
+          <ul class="social-list">
+            <li class = "social-list__item">
+              <a class="social-list__link" href="https://www.linkedin.com/in/jeromeneo">
+                 LinkedIn<!-- <i class="fab fa-linkedin-in"></i> -->
+              </a>
+            </li>
+            <li class = "social-list__item">
+              <a class="social-list__link" href="https://github.com/jerome-neo">
+                Github<!-- <i class="fab fa-github"></i> -->
+              </a>
+            </li>
+          </ul>
+
+      </footer>
+
+
+        <script src="index.js"></script>
+
+    </body>
+</html>
