@@ -13,7 +13,7 @@ window.PROJECTS = [
     title: "Self-Hosted Data Lakehouse",
     tier: "featured",
     category: "Data Engineering",
-    blurb: "An on-premise, Kubernetes-native Databricks alternative: governed catalog (Unity Catalog OSS), SQL warehouses (Trino), elastic Spark, Delta/Iceberg tables on MinIO, and an NL-to-SQL assistant — no SaaS control plane.",
+    blurb: "An on-premise, Kubernetes-native data lakehouse platform: a governed catalog (Apache Polaris), SQL warehouses (Trino), elastic Spark, Delta/Iceberg tables on MinIO, and a natural-language (NL-to-SQL) assistant — no SaaS control plane.",
     tags: ["Kubernetes", "Spark", "Trino", "Iceberg", "Delta Lake", "FastAPI", "Next.js"],
     repo: null,
     detail: "projects/data-lakehouse.html",

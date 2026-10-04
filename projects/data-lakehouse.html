@@ -31,19 +31,22 @@
       <p class="eyebrow">Data Engineering</p>
       <h1 class="section__title">Self-Hosted Data Lakehouse</h1>
       <div class="tag-row" style="margin-bottom:1.5rem">
-        <span class="tag">Kubernetes</span><span class="tag">Spark</span><span class="tag">Trino</span><span class="tag">Iceberg</span><span class="tag">Delta Lake</span><span class="tag">Unity Catalog</span><span class="tag">FastAPI</span><span class="tag">Next.js</span>
+        <span class="tag">Kubernetes</span><span class="tag">Spark</span><span class="tag">Trino</span><span class="tag">Iceberg</span><span class="tag">Delta Lake</span><span class="tag">Apache Polaris</span><span class="tag">FastAPI</span><span class="tag">Next.js</span>
       </div>
-      <p>A self-hostable data platform that brings the core Databricks experience — notebooks, a governed catalog, SQL warehouses, jobs, elastic Spark compute, and an AI/BI assistant — to any Kubernetes cluster you control. It runs entirely on-premise (or in your own cloud VPC) with no dependency on a SaaS control plane.</p>
+      <p>A self-hostable data platform — notebooks, a governed catalog, SQL warehouses, jobs, elastic Spark compute, and a natural-language AI/BI assistant — that runs on any Kubernetes cluster you control. It runs entirely on-premise (or in your own cloud VPC) with no dependency on a SaaS control plane.</p>
 
       <h2>Approach</h2>
-      <p>Where strong open source already exists, the platform integrates it rather than reinventing it: Unity Catalog OSS for governance, Delta Lake and Iceberg for table formats, Spark on the Kubeflow Spark Operator for compute, Trino for interactive SQL, Open Policy Agent for authorization, MinIO for object storage, and PostgreSQL for metadata.</p>
+      <p>Where strong open source already exists, the platform integrates it rather than reinventing it: Apache Polaris for the governed catalog, Delta Lake and Iceberg for table formats, Spark on the Kubeflow Spark Operator for compute, Trino for interactive SQL, Open Policy Agent for authorization, MinIO for object storage, and PostgreSQL for metadata.</p>
 
       <h2>What I built</h2>
       <ul>
-        <li><strong>Control Plane</strong> — a FastAPI service that manages workspaces, compute (Spark clusters and SQL warehouses), jobs, notebooks, and a catalog proxy, driving the Kubernetes API and Unity Catalog underneath.</li>
-        <li><strong>Genie</strong> — an AI/BI assistant that turns natural language into SQL against the governed catalog, with a pluggable model layer (Anthropic, OpenAI, Azure OpenAI, or local Ollama/vLLM).</li>
-        <li><strong>Workspace UI</strong> — a Next.js single-pane workspace with a catalog explorer, SQL editor, notebooks, compute, jobs, and a Genie chat.</li>
+        <li><strong>Control Plane</strong> — a FastAPI service that manages workspaces, compute (Spark clusters and SQL warehouses), jobs, notebooks, and a catalog proxy, driving the Kubernetes API and the governed catalog underneath.</li>
+        <li><strong>Natural-language assistant</strong> — a conversational AI/BI assistant that turns natural language into SQL against the governed catalog, with a pluggable model layer (Anthropic, OpenAI, Azure OpenAI, or local Ollama/vLLM).</li>
+        <li><strong>Workspace UI</strong> — a Next.js single-pane workspace with a catalog explorer, SQL editor, notebooks, compute, jobs, and the assistant chat.</li>
       </ul>
+
+      <h2>How it was built</h2>
+      <p>I built the platform end to end with an agentic-coding workflow — AI coding agents driving architecture, implementation, and iteration under close review — spanning a FastAPI control plane, a Spark and Trino compute layer on Kubernetes, and a Next.js workspace, kept coherent through tight specifications and continuous verification.</p>
 
       <p><a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
     </section>
