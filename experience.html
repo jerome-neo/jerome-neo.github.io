@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experience — Jerome Neo</title>
+  <meta name="description" content="Jerome Neo — Software Engineer focused on applied AI and system design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="index.html">Home</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link nav__link--active" href="experience.html">Experience</a>
+        <a class="nav__link" href="projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+  <section class="section container">
+    <p class="eyebrow">Experience</p>
+    <h1 class="section__title">Where I have worked</h1>
+    <div class="timeline">
+      <div class="timeline__item">
+        <h3>Software Engineer — Defence Science and Technology Agency</h3>
+        <p class="timeline__meta">Singapore · Jul 2024 – Present</p>
+        <ul>
+          <li>Led the technical design of a data archival initiative: proposed a self-hosted lakehouse architecture, aligned it with DSTA-wide data standards, and presented the design to leadership for approval.</li>
+          <li>Prototyped the lakehouse end to end on Kubernetes toward an air-gapped deployment — Spark, Trino, Iceberg + Nessie, MinIO, NiFi, Elasticsearch — secured with Keycloak, OPA, and Istio, with a self-contained supply chain via Harbor and GitLab.</li>
+          <li>Built and operate an event-driven job-scheduling service in production (Spring Boot, Kafka, Quartz, Redis on Kubernetes), designed for 100k+ events/hour.</li>
+          <li>Fine-tuned XTTS v2 on 2,171 hours of Singaporean speech (voice similarity +5–10%), with a Streamlit + FastAPI demo and MongoDB embedding caching for real-time voice cloning.</li>
+        </ul>
+      </div>
+      <div class="timeline__item">
+        <h3>Data Engineer Intern — Razer Inc.</h3>
+        <p class="timeline__meta">Singapore · Jan 2024 – Jun 2024</p>
+        <ul>
+          <li>Led prototyping of an AI-powered unit-test generator using RAG (LangChain) and Pinecone for contextual code retrieval and automated test generation.</li>
+          <li>Refactored ETL from Pandas to optimized SQL on AWS Redshift and migrated materialized views to dbt, improving ingestion stability and data freshness for the recommendation engine.</li>
+        </ul>
+      </div>
+      <div class="timeline__item">
+        <h3>Full Stack Developer Intern — IBM Singapore</h3>
+        <p class="timeline__meta">Singapore · Jul 2023 – Dec 2023</p>
+        <ul>
+          <li>Built context-aware enterprise search with AWS Kendra and scalable Spring Boot REST APIs, improving retrieval relevance and maintainability.</li>
+          <li>Increased code coverage by 60%+ with Mockito-based tests and documented results to improve release confidence.</li>
+        </ul>
+      </div>
+      <div class="timeline__item">
+        <h3>Research Intern — A*STAR</h3>
+        <p class="timeline__meta">Singapore · May 2022 – Jul 2022</p>
+        <ul>
+          <li>Researched time-series forecasting of intermittent supply-chain data using LSTM/GRU models, presenting findings and Python visualizations to stakeholders.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
