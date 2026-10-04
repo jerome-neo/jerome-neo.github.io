@@ -1,0 +1,7 @@
+# Claude / AI planning artifacts (keep repo looking hand-authored)
+docs/superpowers/
+.claude/
+CLAUDE.md
+
+# OS cruft
+.DS_Store
