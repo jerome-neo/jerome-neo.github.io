@@ -23,7 +23,10 @@
     const navToggle = document.querySelector('.nav-toggle');
     const header = document.querySelector('.site-header');
     if (navToggle && header) {
-      navToggle.addEventListener('click', () => header.classList.toggle('open'));
+      navToggle.addEventListener('click', () => {
+        const open = header.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(open));
+      });
     }
 
     if (window.PROJECTS && document.getElementById('project-grid')) {
