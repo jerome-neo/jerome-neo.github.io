@@ -133,6 +133,13 @@
         <figcaption>Two frontends over one streaming FastAPI backend: the agent reads the graph with validated read-only Cypher, ingestion writes it, and the LLM runtime swaps providers at runtime. Ingestion and memory also call the runtime for extraction and summarization.</figcaption>
       </figure>
 
+      <h2>Two frontends, one backend</h2>
+      <p>The same backend powers two different interfaces, each built for a different audience:</p>
+      <ul>
+        <li><strong>GraphRAG Studio (Streamlit)</strong> is the all-in-one working tool. You upload your files and it turns them into a connected map of the facts and relationships inside them; you can explore that map visually and ask questions about it in plain English. Streamlit lets all of this live in a single app with no custom web development, so the full feature set is usable from one place.</li>
+        <li><strong>Agent Console (React)</strong> is a polished, purpose-built interface that makes the agent's process easy to follow. As it answers a question, every step it takes — deciding what to look up, searching the knowledge map, and writing the final answer — appears live as a workflow you can watch unfold, next to the answer itself. Its job is to show clearly <em>how</em> the agent reasons, and to prove the backend can power a fully custom app, not just the quick Streamlit one.</li>
+      </ul>
+
       <h2>Highlights</h2>
       <ul>
         <li><strong>Model-agnostic:</strong> every LLM call goes through one provider layer, switchable between OpenAI, Anthropic, Ollama, or any OpenAI-compatible endpoint with two environment variables — and swappable at runtime from the UI.</li>

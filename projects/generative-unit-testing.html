@@ -35,7 +35,7 @@
       <div class="tag-row" style="margin-bottom:1.5rem">
         <span class="tag">RAG</span><span class="tag">LangChain</span><span class="tag">Pinecone</span><span class="tag">Embeddings</span><span class="tag">LLM</span><span class="tag">Python</span>
       </div>
-      <p>A retrieval-augmented system that writes unit tests for a codebase. It indexes source files into a vector store, retrieves the most relevant context for a given target, and has an LLM draft tests grounded in how the surrounding code actually behaves — rather than guessing from a function signature alone. I led the prototype during a data-engineering internship.</p>
+      <p>A retrieval-augmented system that writes unit tests for a codebase. It indexes source files into a vector store, retrieves the most relevant context for a given target, and has an LLM draft tests grounded in how the surrounding code actually behaves — rather than guessing from a function signature alone. I led the prototype during a data-engineering internship in early 2024, when retrieval-augmented generation was still an emerging technique for grounding LLMs in private context.</p>
 
       <figure class="figure figure--diagram">
         <svg viewBox="0 0 900 340" role="img" aria-labelledby="genu-title genu-desc">
@@ -109,6 +109,9 @@
 
       <h2>Why RAG</h2>
       <p>Test quality depends on context. Feeding a model only the function under test produces shallow, often wrong assertions. Retrieving the surrounding code — callers, helpers, related types — gives the model the behaviour it needs to assert against, which is what makes the generated tests useful.</p>
+
+      <h2>Where it fits now</h2>
+      <p>The core problem is the same one today's coding assistants solve: give the model enough of the surrounding code to be correct, not just a signature. What has changed is the mechanism. In early 2024, a vector store was the practical way to pull in relevant context under tight token limits; modern tools often rely on much larger context windows and agents that navigate files directly. This project was an early, working take on that same goal — and the retrieval pattern it uses still holds up wherever a codebase is too large to hand a model all at once.</p>
 
       <p><a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
     </section>
