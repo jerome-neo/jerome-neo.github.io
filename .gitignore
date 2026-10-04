@@ -5,3 +5,9 @@ CLAUDE.md
 
 # OS cruft
 .DS_Store
+
+# Editor / local tooling
+.idea/
+.vscode/
+.megamemory/
+.omc/
