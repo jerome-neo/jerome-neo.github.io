@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic Graph RAG — Jerome Neo</title>
+  <meta name="description" content="Jerome Neo — Software Engineer focused on applied AI and system design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Applied AI / LLM</p>
+      <h1 class="section__title">Agentic Graph RAG</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">FalkorDB</span><span class="tag">LangChain</span><span class="tag">Streamlit</span><span class="tag">SSE</span>
+      </div>
+      <p>An end-to-end agentic GraphRAG stack: ingest almost any file into a FalkorDB knowledge graph, then ask questions in natural language. A tool-calling agent inspects the live graph schema, plans and executes read-only Cypher, self-corrects on errors, and streams its full reasoning trace — grounding every answer in the graph.</p>
+
+      <h2>Highlights</h2>
+      <ul>
+        <li><strong>Model-agnostic:</strong> every LLM call goes through one provider layer, switchable between OpenAI, Anthropic, Ollama, or any OpenAI-compatible endpoint with two environment variables — and swappable at runtime from the UI.</li>
+        <li><strong>Modern agent loop:</strong> native tool calling with conversation-state accumulation, a structured-JSON fallback for local models, read-only Cypher validation, error self-correction, and capped retries.</li>
+        <li><strong>Memory that scales:</strong> recent turns replay verbatim; older turns fold into a rolling LLM-generated summary so long chats keep context without unbounded prompts.</li>
+        <li><strong>Ingest any shape:</strong> tabular files become a typed entity graph via inferred schema; documents are chunked with LLM-extracted entities and relationships.</li>
+        <li><strong>Streaming API:</strong> the FastAPI backend streams agent events (thoughts, tool calls, Cypher, answers, graph payloads) over SSE to a Streamlit UI with live traces and an interactive graph view.</li>
+      </ul>
+
+      <p><a class="btn btn--primary" href="https://github.com/jerome-neo/agentic-graph-rag" target="_blank" rel="noopener">View on GitHub</a>
+         <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

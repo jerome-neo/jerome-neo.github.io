@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Hosted Data Lakehouse — Jerome Neo</title>
+  <meta name="description" content="Jerome Neo — Software Engineer focused on applied AI and system design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Data Engineering</p>
+      <h1 class="section__title">Self-Hosted Data Lakehouse</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">Kubernetes</span><span class="tag">Spark</span><span class="tag">Trino</span><span class="tag">Iceberg</span><span class="tag">Delta Lake</span><span class="tag">Unity Catalog</span><span class="tag">FastAPI</span><span class="tag">Next.js</span>
+      </div>
+      <p>A self-hostable data platform that brings the core Databricks experience — notebooks, a governed catalog, SQL warehouses, jobs, elastic Spark compute, and an AI/BI assistant — to any Kubernetes cluster you control. It runs entirely on-premise (or in your own cloud VPC) with no dependency on a SaaS control plane.</p>
+
+      <h2>Approach</h2>
+      <p>Where strong open source already exists, the platform integrates it rather than reinventing it: Unity Catalog OSS for governance, Delta Lake and Iceberg for table formats, Spark on the Kubeflow Spark Operator for compute, Trino for interactive SQL, Open Policy Agent for authorization, MinIO for object storage, and PostgreSQL for metadata.</p>
+
+      <h2>What I built</h2>
+      <ul>
+        <li><strong>Control Plane</strong> — a FastAPI service that manages workspaces, compute (Spark clusters and SQL warehouses), jobs, notebooks, and a catalog proxy, driving the Kubernetes API and Unity Catalog underneath.</li>
+        <li><strong>Genie</strong> — an AI/BI assistant that turns natural language into SQL against the governed catalog, with a pluggable model layer (Anthropic, OpenAI, Azure OpenAI, or local Ollama/vLLM).</li>
+        <li><strong>Workspace UI</strong> — a Next.js single-pane workspace with a catalog explorer, SQL editor, notebooks, compute, jobs, and a Genie chat.</li>
+      </ul>
+
+      <p><a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
