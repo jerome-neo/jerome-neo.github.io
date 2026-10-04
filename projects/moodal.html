@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moodal — Jerome Neo</title>
+  <meta name="description" content="Moodal — a mood-tracking app that detects student distress via the K10 scale and connects them to mental-health help. Third place at NUS Makerthon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Full-Stack</p>
+      <h1 class="section__title">Moodal</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">React Native</span><span class="tag">JavaScript</span><span class="tag">Mobile</span><span class="tag">Mental Health</span><span class="tag">Hackathon</span>
+      </div>
+
+      <figure class="figure figure--logo">
+        <img src="../img/Moodal.png" alt="Moodal logo — a friendly yellow blob mascot above the word Moodal" loading="lazy">
+      </figure>
+
+      <p>Moodal is a mood-tracking app that aims to be the one-stop mental-health companion for university students. It helps students become more aware of their emotions, flags when they may need help, and connects them to the right support with as little friction as possible. Built with a team at NUS Makerthon, where it placed <strong>third</strong>.</p>
+
+      <h2>The problem</h2>
+      <p>Students carry heavy workloads and tight deadlines, and often normalise their stress — "it's not that bad yet" — until it is. Those who do seek help hit roadblocks: unfamiliar mental-health frameworks and booking systems that feel insurmountable when you're already struggling. Moodal lowers that barrier.</p>
+
+      <h2>What it does</h2>
+      <ul>
+        <li><strong>Mood tracking</strong> — a daily mood calendar that doubles as an early-warning system: when it detects signs of distress, it prompts the student to take the Kessler (K10) distress survey, and a dashboard lets them track how their mood trends over time.</li>
+        <li><strong>Friendly by design</strong> — a pastel world of "Moodal" characters (a cartoon stand-in for the user's mood) with collectible designs unlocked by logging moods daily, nudging students to keep the habit.</li>
+        <li><strong>Connecting students to help</strong> — K10 results map to tiered support, from self-serve resources to Psychological First Aid (PFA) volunteers and University Health Centre counsellors, delivered over telemedicine (phone or video) or in person. Booking is seamless, with automated emails and confirmation texts, and the PFA phone line is anonymous to build trust.</li>
+      </ul>
+
+      <h2>What made it novel</h2>
+      <p>Beyond mood tracking, Moodal introduced <strong>telemedicine</strong> and <strong>Psychological First Aid</strong> as new entry points into the campus mental-health workflow — widening access without requiring a student to be physically present, and letting the wider community volunteer as first responders.</p>
+
+      <figure class="figure figure--poster">
+        <img src="../img/MoodalPoster.png" alt="Moodal project poster: problem framing, the three core features, the help-seeking workflow, and rollout plan" loading="lazy">
+        <figcaption>Project poster — problem, the three core features, the K10 help-seeking workflow, and the rollout plan.</figcaption>
+      </figure>
+
+      <p><a class="btn btn--primary" href="https://github.com/jerome-neo/Makerthon-2022" target="_blank" rel="noopener">View on GitHub</a>
+         <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

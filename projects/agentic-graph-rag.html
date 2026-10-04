@@ -35,6 +35,102 @@
       </div>
       <p>An end-to-end agentic GraphRAG stack: ingest almost any file into a FalkorDB knowledge graph, then ask questions in natural language. A tool-calling agent inspects the live graph schema, plans and executes read-only Cypher, self-corrects on errors, and streams its full reasoning trace — grounding every answer in the graph.</p>
 
+      <h2>Architecture</h2>
+      <figure class="figure figure--diagram">
+        <svg viewBox="0 0 960 490" role="img" aria-labelledby="agr-title agr-desc">
+          <title id="agr-title">Agentic Graph RAG architecture</title>
+          <desc id="agr-desc">A user reaches a Streamlit studio and a React console, which call a FastAPI backend over HTTP and SSE. The backend runs an agent engine, an LLM runtime, ingestion, and session memory. The agent runs read-only Cypher against FalkorDB; ingestion writes nodes and edges to it. The LLM runtime talks to one of several swappable providers.</desc>
+          <defs>
+            <marker id="agr-ah" markerWidth="9" markerHeight="7" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" class="dg-arrow"/>
+            </marker>
+          </defs>
+
+          <!-- containers -->
+          <rect x="330" y="70" width="380" height="400" rx="12" style="fill:none;stroke:var(--border);stroke-dasharray:6 4"/>
+          <text x="345" y="92" class="dg-title">FastAPI Backend · :8000</text>
+          <rect x="760" y="305" width="180" height="160" rx="12" style="fill:none;stroke:var(--border);stroke-dasharray:6 4"/>
+
+          <!-- clients -->
+          <rect x="20" y="215" width="70" height="60" rx="10" class="dg-box"/>
+          <text x="55" y="250" text-anchor="middle" class="dg-title">User</text>
+
+          <rect x="120" y="120" width="170" height="76" rx="10" class="dg-box"/>
+          <text x="205" y="145" text-anchor="middle" class="dg-title">GraphRAG Studio</text>
+          <text x="205" y="164" text-anchor="middle" class="dg-label--mono">Streamlit · :8501</text>
+          <text x="205" y="180" text-anchor="middle" class="dg-label--mono">chat · ingest · graph</text>
+
+          <rect x="120" y="300" width="170" height="76" rx="10" class="dg-box"/>
+          <text x="205" y="325" text-anchor="middle" class="dg-title">Agent Console</text>
+          <text x="205" y="344" text-anchor="middle" class="dg-label--mono">React / Vite · :5173</text>
+          <text x="205" y="360" text-anchor="middle" class="dg-label--mono">live SSE demo</text>
+
+          <!-- api bar -->
+          <rect x="345" y="108" width="350" height="36" rx="8" class="dg-box"/>
+          <text x="520" y="130" text-anchor="middle" class="dg-label--mono" font-size="10">REST + SSE · /query /upload /llm /graphs /graph-schema /sessions</text>
+
+          <!-- backend inner boxes -->
+          <rect x="345" y="165" width="170" height="120" rx="10" class="dg-box dg-box--accent"/>
+          <text x="430" y="190" text-anchor="middle" class="dg-title">Agent Engine</text>
+          <text x="430" y="210" text-anchor="middle" class="dg-label--mono">tool loop · get_schema</text>
+          <text x="430" y="226" text-anchor="middle" class="dg-label--mono">· execute_cypher</text>
+          <text x="430" y="242" text-anchor="middle" class="dg-label--mono">read-only · self-correct</text>
+          <text x="430" y="258" text-anchor="middle" class="dg-label--mono">JSON fallback</text>
+
+          <rect x="525" y="165" width="170" height="120" rx="10" class="dg-box"/>
+          <text x="610" y="190" text-anchor="middle" class="dg-title">LLM Runtime</text>
+          <text x="610" y="210" text-anchor="middle" class="dg-label--mono">provider / model</text>
+          <text x="610" y="226" text-anchor="middle" class="dg-label--mono">switchable at runtime</text>
+          <text x="610" y="242" text-anchor="middle" class="dg-label--mono">(no restart)</text>
+
+          <rect x="345" y="305" width="170" height="120" rx="10" class="dg-box"/>
+          <text x="430" y="330" text-anchor="middle" class="dg-title">Ingestion</text>
+          <text x="430" y="350" text-anchor="middle" class="dg-label--mono">files → typed graph</text>
+          <text x="430" y="366" text-anchor="middle" class="dg-label--mono">docs → chunk +</text>
+          <text x="430" y="382" text-anchor="middle" class="dg-label--mono">LLM entity extraction</text>
+
+          <rect x="525" y="305" width="170" height="120" rx="10" class="dg-box"/>
+          <text x="610" y="330" text-anchor="middle" class="dg-title">Session Memory</text>
+          <text x="610" y="350" text-anchor="middle" class="dg-label--mono">recent turns verbatim</text>
+          <text x="610" y="366" text-anchor="middle" class="dg-label--mono">+ rolling LLM</text>
+          <text x="610" y="382" text-anchor="middle" class="dg-label--mono">summary of older</text>
+
+          <!-- data + providers -->
+          <rect x="760" y="165" width="180" height="120" rx="10" class="dg-box dg-box--accent"/>
+          <text x="850" y="205" text-anchor="middle" class="dg-title">FalkorDB</text>
+          <text x="850" y="225" text-anchor="middle" class="dg-label--mono">:6380 · multi-graph</text>
+          <text x="850" y="241" text-anchor="middle" class="dg-label--mono">knowledge graph</text>
+
+          <text x="850" y="330" text-anchor="middle" class="dg-title">LLM Providers</text>
+          <text x="850" y="354" text-anchor="middle" class="dg-label--mono">Ollama (local)</text>
+          <text x="850" y="372" text-anchor="middle" class="dg-label--mono">OpenAI</text>
+          <text x="850" y="390" text-anchor="middle" class="dg-label--mono">Anthropic</text>
+          <text x="850" y="408" text-anchor="middle" class="dg-label--mono">OpenAI-compatible</text>
+          <text x="850" y="432" text-anchor="middle" class="dg-label--mono">one active · switchable</text>
+
+          <!-- edges -->
+          <path d="M90,235 H104 V158 H118" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <path d="M90,255 H104 V338 H118" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <path d="M290,158 H312 V122 H343" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <path d="M290,338 H324 V130 H343" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <text x="318" y="108" text-anchor="middle" class="dg-label--mono">HTTP + SSE</text>
+
+          <path d="M430,144 V163" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <path d="M515,225 H523" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <text x="520" y="218" text-anchor="middle" class="dg-label--mono">uses</text>
+
+          <path d="M490,165 V150 H850 V163" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <text x="690" y="144" text-anchor="middle" class="dg-label--mono">read-only Cypher</text>
+
+          <path d="M430,425 V446 H740 V250 H758" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <text x="560" y="440" text-anchor="middle" class="dg-label--mono">nodes + edges</text>
+
+          <path d="M610,285 V297 H850 V303" class="dg-edge" marker-end="url(#agr-ah)"/>
+          <text x="726" y="292" text-anchor="middle" class="dg-label--mono">1 active</text>
+        </svg>
+        <figcaption>Two frontends over one streaming FastAPI backend: the agent reads the graph with validated read-only Cypher, ingestion writes it, and the LLM runtime swaps providers at runtime. Ingestion and memory also call the runtime for extraction and summarization.</figcaption>
+      </figure>
+
       <h2>Highlights</h2>
       <ul>
         <li><strong>Model-agnostic:</strong> every LLM call goes through one provider layer, switchable between OpenAI, Anthropic, Ollama, or any OpenAI-compatible endpoint with two environment variables — and swappable at runtime from the UI.</li>

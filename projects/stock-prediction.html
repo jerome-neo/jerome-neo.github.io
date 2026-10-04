@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Prediction — Jerome Neo</title>
+  <meta name="description" content="Time Series Forecasting: comparing ARIMA and LSTM models for stock price prediction. An NUS CS3244 machine-learning project.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Data Engineering</p>
+      <h1 class="section__title">Stock Prediction</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">Python</span><span class="tag">ARIMA</span><span class="tag">LSTM</span><span class="tag">Time Series</span><span class="tag">Jupyter</span>
+      </div>
+
+      <figure class="figure">
+        <img src="../img/CS3244.png" alt="Title slide: 'Time is Money: Time Series Forecasting', a CS3244 group project" loading="lazy">
+        <figcaption>"Time is Money: Time Series Forecasting" — the project's title slide.</figcaption>
+      </figure>
+
+      <p>A machine-learning project comparing classical and deep-learning approaches to forecasting stock prices: a statistical <strong>ARIMA</strong> baseline against a recurrent <strong>LSTM</strong> network. Built as a team for NUS's CS3244 (Machine Learning).</p>
+
+      <h2>The question</h2>
+      <p>Does a deep sequence model actually beat a well-tuned statistical baseline on noisy financial time series? ARIMA is a strong, interpretable classical forecaster; LSTMs can capture non-linear, longer-range structure. We put the two head to head on the same data to see where each wins.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Baseline</strong> — fit ARIMA on the price series, selecting differencing and lag orders, as an interpretable point of comparison.</li>
+        <li><strong>Deep model</strong> — train an LSTM on windowed sequences to forecast forward prices.</li>
+        <li><strong>Evaluation</strong> — compare the models' forecasts against held-out data to weigh accuracy against complexity and interpretability.</li>
+      </ul>
+
+      <p><a class="btn btn--primary" href="https://github.com/jerome-neo/Stock-Prediction" target="_blank" rel="noopener">View on GitHub</a>
+         <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

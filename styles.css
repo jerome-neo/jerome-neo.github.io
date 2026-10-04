@@ -123,6 +123,25 @@ a { color: inherit; }
 .timeline ul { margin: .6rem 0 0; padding-left: 1.1rem; }
 .timeline li { margin-bottom: .35rem; }
 
+/* Shiny Text (ReactBits port) — a highlight sweeps across each role title */
+.timeline__item h3 {
+  background: linear-gradient(110deg, var(--text) 0%, var(--text) 42%, var(--accent) 50%, var(--text) 58%, var(--text) 100%);
+  background-size: 220% 100%;
+  background-position: 120% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shiny-text 10s linear infinite;
+}
+@keyframes shiny-text { to { background-position: -120% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .timeline__item h3 { animation: none; background: none; -webkit-text-fill-color: var(--text); color: var(--text); }
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .timeline__item h3 { background: none; -webkit-text-fill-color: var(--text); color: var(--text); }
+}
+
 /* Skills / about */
 .skill-group { margin-bottom: 1.25rem; }
 .skill-group h3 { font-size: 1rem; margin-bottom: .4rem; }
@@ -137,6 +156,175 @@ a { color: inherit; }
 .prose p, .prose ul { margin-bottom: 1rem; }
 .prose ul { padding-left: 1.2rem; }
 .prose h2 { margin-top: 2rem; }
+
+/* Figures: video + diagrams (detail pages) */
+.figure { margin: 1.75rem 0; }
+.figure video { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: #000; display: block; }
+.figure--diagram { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.figure--diagram svg { width: 100%; height: auto; display: block; }
+.figure figcaption { color: var(--muted); font-size: .9rem; margin-top: .6rem; }
+.prose .figure figcaption { margin-bottom: 0; }
+.figure img { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); display: block; }
+.figure--logo img { border: none; }
+.figure--poster img { max-width: 720px; margin-inline: auto; }
+
+/* About hero — frosted glass over the Singapore skyline */
+.about-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-block: clamp(4rem, 3rem + 7vw, 8rem);
+  background: #0b1018 url("img/SingaporeSkyline.jpg") center / cover no-repeat;
+}
+.about-hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(8,12,20,.35), rgba(8,12,20,.7));
+}
+.glass-card {
+  max-width: 64ch;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.6rem);
+  border-radius: 22px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: 0 10px 44px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.25);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  color: #eef2f7;
+}
+.glass-card .eyebrow { color: #7ff0dd; }
+.glass-card h1 { color: #fff; font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); margin-block: .35rem .8rem; }
+.glass-card .lead { color: rgba(238,242,247,.92); max-width: none; }
+.about-hero__loc {
+  display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.25rem;
+  font-family: var(--ff-mono); font-size: .85rem; letter-spacing: .02em; color: #fff;
+  padding: .4rem .8rem; border-radius: 999px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+}
+.about-hero__loc svg { width: 15px; height: 15px; }
+
+/* About hero: parallax skyline on scroll + hover sheen on the glass card */
+.about-hero { background-position: 50% calc(50% + var(--sy, 0) * 0.08px); }
+.glass-card { position: relative; overflow: hidden; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.glass-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.16), transparent 60%);
+  transition: opacity .3s ease;
+}
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,.4);
+  box-shadow: 0 16px 56px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.3);
+}
+.glass-card:hover::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .about-hero { background-position: center; }
+  .glass-card, .glass-card::after { transition: none; }
+}
+
+/* Home hero tile — scroll-reactive background + cursor-aware hover */
+.hero-tile {
+  position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--border); border-radius: 28px;
+  background: var(--surface);
+  padding: clamp(2rem, 1.5rem + 4vw, 4.5rem);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.hero-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+.hero-tile__bg {
+  position: absolute; inset: -25%; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(42% 52% at 18% 28%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 70%),
+    radial-gradient(38% 48% at 82% 18%, color-mix(in srgb, #8b7bf7 28%, transparent), transparent 70%),
+    radial-gradient(46% 56% at 72% 88%, color-mix(in srgb, #38bdf8 26%, transparent), transparent 70%);
+  filter: blur(36px);
+  transform: translate3d(0, calc(var(--sy, 0) * 0.06px), 0) scale(calc(1 + var(--sy, 0) * 0.00004));
+  will-change: transform;
+}
+.hero-tile::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%);
+  transition: opacity .3s ease;
+}
+.hero-tile:hover::after { opacity: 1; }
+.hero-tile .hero__actions { margin-top: 1.75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-tile, .hero-tile::after { transition: none; }
+  .hero-tile__bg { transform: none; }
+}
+
+/* Diagram primitives (inherit theme via currentColor + vars) */
+.dg-box { fill: var(--bg); stroke: var(--border); }
+.dg-box--accent { fill: color-mix(in srgb, var(--accent) 12%, var(--bg)); stroke: var(--accent); }
+.dg-label { fill: var(--text); font-family: var(--ff-body); font-size: 13px; }
+.dg-label--mono { font-family: var(--ff-mono); font-size: 11px; fill: var(--muted); }
+.dg-title { fill: var(--text); font-family: var(--ff-display); font-size: 14px; font-weight: 700; }
+.dg-edge { stroke: var(--muted); fill: none; }
+.dg-arrow { fill: var(--muted); }
+
+/* ===== Intentional motion layer (vanilla ports of ReactBits effects) ===== */
+
+/* Star Border — a light travels the border of primary CTAs */
+@property --sb-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+.btn--primary { position: relative; z-index: 0; isolation: isolate; }
+.btn--primary::before {
+  content: ""; position: absolute; inset: -1.5px; z-index: -1; border-radius: 12px; padding: 1.5px;
+  background: conic-gradient(from var(--sb-angle),
+    transparent 0 62%, color-mix(in srgb, var(--accent-contrast) 80%, transparent) 78%,
+    #fff 85%, color-mix(in srgb, var(--accent-contrast) 80%, transparent) 92%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: sb-spin 3.5s linear infinite; opacity: .9;
+}
+@keyframes sb-spin { to { --sb-angle: 360deg; } }
+
+/* Electric Border — highlight for a genuinely featured card */
+.card--electric { position: relative; z-index: 0; border-color: transparent; }
+.card--electric::before {
+  content: ""; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; padding: 1.5px;
+  background: conic-gradient(from var(--sb-angle),
+    var(--accent), color-mix(in srgb, var(--accent) 40%, #7df9ff) 25%, var(--accent) 50%,
+    color-mix(in srgb, var(--accent) 55%, #b388ff) 75%, var(--accent) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: sb-spin 4s linear infinite;
+}
+.card--electric::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent),
+              0 0 18px color-mix(in srgb, var(--accent) 35%, transparent);
+  animation: ec-pulse 2.4s ease-in-out infinite;
+}
+@keyframes ec-pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* Lightweight tile hover — cursor-aware highlight + lift (Shape Blur, done cheaply) */
+.card { position: relative; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%);
+}
+.card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); box-shadow: var(--shadow); }
+.card:hover::after { opacity: 1; }
+.card--electric:hover { transform: translateY(-4px); }
+
+/* Gradual Blur — soft focus at the scroll edges (injected by main.js) */
+.scroll-fade { position: fixed; left: 0; right: 0; height: 64px; z-index: 40; pointer-events: none; backdrop-filter: blur(5px); }
+.scroll-fade--top { top: 0; -webkit-mask: linear-gradient(to bottom, #000 40%, transparent); mask: linear-gradient(to bottom, #000 40%, transparent); }
+.scroll-fade--bottom { bottom: 0; -webkit-mask: linear-gradient(to top, #000 40%, transparent); mask: linear-gradient(to top, #000 40%, transparent); }
+
+/* Click Spark canvas overlay (drawn by main.js) */
+.spark-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary::before, .card--electric::before, .card--electric::after { animation: none; }
+  .card, .card::after, .card:hover { transition: none; }
+  .scroll-fade { display: none; }
+}
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); padding-block: 2.5rem; color: var(--muted); }

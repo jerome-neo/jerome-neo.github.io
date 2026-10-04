@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generative Unit Testing — Jerome Neo</title>
+  <meta name="description" content="A RAG system that retrieves codebase context and generates unit tests with an LLM. Prototyped during a data-engineering internship.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Applied AI / LLM</p>
+      <h1 class="section__title">Generative Unit Testing</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">RAG</span><span class="tag">LangChain</span><span class="tag">Pinecone</span><span class="tag">Embeddings</span><span class="tag">LLM</span><span class="tag">Python</span>
+      </div>
+      <p>A retrieval-augmented system that writes unit tests for a codebase. It indexes source files into a vector store, retrieves the most relevant context for a given target, and has an LLM draft tests grounded in how the surrounding code actually behaves — rather than guessing from a function signature alone. I led the prototype during a data-engineering internship.</p>
+
+      <figure class="figure figure--diagram">
+        <svg viewBox="0 0 900 340" role="img" aria-labelledby="genu-title genu-desc">
+          <title id="genu-title">RAG unit-test generation pipeline</title>
+          <desc id="genu-desc">Indexing path: source code is parsed and chunked, embedded, and stored in a vector database. Generation path: a target function retrieves similar context from the vector store, an LLM reads it, and emits unit tests.</desc>
+          <defs>
+            <marker id="genu-ah" markerWidth="9" markerHeight="7" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" class="dg-arrow"/>
+            </marker>
+          </defs>
+
+          <text x="30" y="26" class="dg-label--mono">INDEXING</text>
+          <text x="30" y="224" class="dg-label--mono">GENERATION</text>
+
+          <!-- top row: indexing -->
+          <rect x="30"  y="40" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="120" y="66" text-anchor="middle" class="dg-title">Source code</text>
+          <text x="120" y="86" text-anchor="middle" class="dg-label--mono">repository files</text>
+
+          <rect x="240" y="40" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="330" y="66" text-anchor="middle" class="dg-title">Parse &amp; chunk</text>
+          <text x="330" y="86" text-anchor="middle" class="dg-label--mono">split into documents</text>
+
+          <rect x="450" y="40" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="540" y="66" text-anchor="middle" class="dg-title">Embed</text>
+          <text x="540" y="86" text-anchor="middle" class="dg-label--mono">embedding model</text>
+
+          <rect x="660" y="40" width="180" height="62" rx="10" class="dg-box dg-box--accent"/>
+          <text x="750" y="66" text-anchor="middle" class="dg-title">Vector store</text>
+          <text x="750" y="86" text-anchor="middle" class="dg-label--mono">Pinecone index</text>
+
+          <path d="M210,71 H238" class="dg-edge" marker-end="url(#genu-ah)"/>
+          <path d="M420,71 H448" class="dg-edge" marker-end="url(#genu-ah)"/>
+          <path d="M630,71 H658" class="dg-edge" marker-end="url(#genu-ah)"/>
+
+          <!-- bottom row: generation -->
+          <rect x="30"  y="238" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="120" y="264" text-anchor="middle" class="dg-title">Target code</text>
+          <text x="120" y="284" text-anchor="middle" class="dg-label--mono">function under test</text>
+
+          <rect x="240" y="238" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="330" y="264" text-anchor="middle" class="dg-title">Retrieve</text>
+          <text x="330" y="284" text-anchor="middle" class="dg-label--mono">top-k context</text>
+
+          <rect x="450" y="238" width="180" height="62" rx="10" class="dg-box dg-box--accent"/>
+          <text x="540" y="264" text-anchor="middle" class="dg-title">LLM</text>
+          <text x="540" y="284" text-anchor="middle" class="dg-label--mono">drafts tests</text>
+
+          <rect x="660" y="238" width="180" height="62" rx="10" class="dg-box"/>
+          <text x="750" y="264" text-anchor="middle" class="dg-title">Unit tests</text>
+          <text x="750" y="284" text-anchor="middle" class="dg-label--mono">generated suite</text>
+
+          <path d="M210,269 H238" class="dg-edge" marker-end="url(#genu-ah)"/>
+          <path d="M420,269 H448" class="dg-edge" marker-end="url(#genu-ah)"/>
+          <path d="M630,269 H658" class="dg-edge" marker-end="url(#genu-ah)"/>
+
+          <!-- vector store feeds retrieval -->
+          <path d="M750,102 V170 H330 V236" class="dg-edge" marker-end="url(#genu-ah)"/>
+          <text x="540" y="162" text-anchor="middle" class="dg-label--mono">similarity search</text>
+        </svg>
+        <figcaption>Two paths over one vector store: index the codebase once, then retrieve grounded context whenever tests are generated.</figcaption>
+      </figure>
+
+      <h2>Design</h2>
+      <ul>
+        <li><strong>Vector-store abstraction</strong> — an abstract storage interface with a concrete Pinecone implementation, so the retrieval backend can be swapped without touching the generation logic.</li>
+        <li><strong>Source parsing</strong> — a parser loads supported source files and splits them into chunks sized for retrieval.</li>
+        <li><strong>Pluggable embeddings</strong> — a dedicated embedder component wraps the embedding model behind a small interface.</li>
+        <li><strong>Grounded generation</strong> — retrieved context is passed to the LLM so generated tests reflect real usage, not just a signature.</li>
+      </ul>
+
+      <h2>Why RAG</h2>
+      <p>Test quality depends on context. Feeding a model only the function under test produces shallow, often wrong assertions. Retrieving the surrounding code — callers, helpers, related types — gives the model the behaviour it needs to assert against, which is what makes the generated tests useful.</p>
+
+      <p><a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

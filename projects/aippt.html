@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Deck Studio — Jerome Neo</title>
+  <meta name="description" content="A document-to-deck studio that drafts slides with AI and narrates them with a fine-tuned XTTS v2 voice.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Applied AI / LLM</p>
+      <h1 class="section__title">AI Deck Studio</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">XTTS v2</span><span class="tag">Voice Cloning</span><span class="tag">LLM</span><span class="tag">PPTX</span><span class="tag">FastAPI</span><span class="tag">Agentic Coding</span>
+      </div>
+      <p>A document-to-deck studio: paste a document or a prompt, let an LLM draft the outline and slides, then narrate every slide in a cloned voice. It turns a rough brief into a presentable deck — and an auto-narrated walkthrough video — in one pass.</p>
+
+      <div class="figure">
+        <video controls preload="metadata" playsinline>
+          <source src="../media/aippt-narrated.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <figcaption>Walkthrough narrated end to end by my fine-tuned XTTS v2 voice — no human voiceover.</figcaption>
+      </div>
+
+      <h2>What it does</h2>
+      <ul>
+        <li><strong>Draft with AI</strong> — turn a document or a short prompt into a structured outline and slide content.</li>
+        <li><strong>Voice cloning</strong> — upload a short reference clip to clone a voice, preview it, and set it as the deck narrator.</li>
+        <li><strong>Per-slide narration</strong> — generate narration audio per slide, with per-slide voice overrides and a reset-to-deck-voice default.</li>
+        <li><strong>Export</strong> — export to <code>.pptx</code>, re-import a <code>.pptx</code> for editing, and render a narrated walkthrough video.</li>
+      </ul>
+
+      <h2>The voice</h2>
+      <p>Narration runs on an <strong>XTTS v2</strong> model I fine-tuned for a target speaker. Cloning takes a short reference clip; the studio caches voice embeddings so repeat narration stays fast. Every word in the video above is synthetic.</p>
+
+      <div class="figure">
+        <video controls preload="metadata" playsinline>
+          <source src="../media/aippt-demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <figcaption>Full product demo: document in, narrated deck out.</figcaption>
+      </div>
+
+      <h2>How it was built</h2>
+      <p>Built in about a week with an agentic-coding workflow — AI coding agents driving the implementation under close review — across the generation, slide-editing, voice, and export layers. The fine-tuned XTTS v2 model is the piece that makes the narration sound like a specific person rather than a stock TTS voice.</p>
+
+      <p><a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
