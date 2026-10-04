@@ -1,107 +1,72 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title> Jerome's Portfolio</title>
-
-      <!-- update these with your own fonts -->
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,900|Source+Sans+Pro:300,900&display=swap">
-      <link rel="stylesheet" href="styles.css">
-  </head>
-
-  <body>
-    <header>
-      <div class="logo">
-        <img src="img/97a497c225d27f91f4320c0b23d14852-sticker.png" alt="logo">
-      </div>
-      <button class="nav-toggle" aria-label="toggle navigation">
-        <span class="hamburger"></span>
-      </button>
-      <nav class="nav">
-        <ul class="nav__list">
-          <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
-          <li class="nav__item"><a href="#about" class="nav__link">About me</a></li>
-          <li class="nav__item"><a href="#work" class="nav__link">My Work</a></li>
-        </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jerome Neo — Software Engineer</title>
+  <meta name="description" content="Jerome Neo — Software Engineer focused on applied AI and system design.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">Jerome <span>Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link nav__link--active" href="index.html">Home</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="experience.html">Experience</a>
+        <a class="nav__link" href="projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
       </nav>
-    </header>
+      <button class="nav-toggle" aria-label="Toggle menu" type="button">&#9776;</button>
+    </div>
+  </header>
 
-    <!-- Introduction -->
-    <section class="intro" id="home">
-      <h1 class="section__title section__title--intro">
-        Hi, I am <strong> Jerome Neo</strong>
-      </h1>
-      <p class="section__subtitle section__subtitle--intro">data science, year 3</p>
-      <img src="img/DSC7551.jpg" alt="Profile pic" class="intro__img">
-    </section>
-
-    <!-- About me -->
-    <section class="about-me" id="about">
-      <h2 class="section__title section__title--about"> Who I am</h2>
-      <p class="section__subtitle section__subtitle--about">
-        Aspiring data scientist
-      </p>
-
-      <div class="about-me__body">
-        <p> I am currently pursuing a degree in Data Science and Analytics with a 2nd Major in Computer Science at the National University of Singapore (NUS).</p>
-        <p> This summer, I completed an internship with A*STAR to build a forecasting model using
-        a type of recurrent neural network called Long Short-Term Memory (LSTM). More details can be found under projects.</p>
-        <p> Presently, I am on a student exchange programme at Northwestern University for the fall quarter. </p>
-      </div>
-
-      <img src="img/DSC5398.jpg" alt="Jerome in front of Marina Bay Sands Singapore." class="about-me__img">
-    </section>
-
-    <!-- My work -->
-    <section class="my-work" id="work">
-      <h2 class="section__title section__title--work">My work</h2>
-      <p class="section__subtitle section__subtitle--work">Some of my past projects</p>
-
-      <div class="portfolio">
-        <!-- Portfolio item 01 -->
-        <a href="project1.html" class="portfolio__item">
-          <img src="img/ASTAR.png" alt="Project on Demand Forecasting" class="portfolio__img">
-        </a>
-
-        <!-- Portfolio item 02 -->
-        <a href="project2.html" class="portfolio__item">
-          <img src="img/Moodal.png" alt="Project on Mental Health app" class="portfolio__img">
-        </a>
-
-        <!-- Portfolio item 01 -->
-        <a href="project3.html" class="portfolio__item">
-          <img src="img/CS3244.png" alt="Project on Stock Prediction" class="portfolio__img">
-        </a>
+  <main>
+    <section class="hero container">
+      <p class="eyebrow">Software Engineer</p>
+      <h1>I build systems and applied AI, end to end.</h1>
+      <p class="lead">Currently at DSTA, designing a self-hosted data lakehouse and running event-driven services in production. I like owning problems from architecture down to the running system.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="projects.html">View projects</a>
+        <a class="btn btn--ghost" href="experience.html">Experience</a>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <a href="mailto:e0538259@u.nus.edu" class="footer-link">e0538259@u.nus.edu</a>
-      <ul class="social-list">
-        <li class = "social-list__item">
-          <a class="social-list__link" href="https://www.linkedin.com/in/jeromeneo">
-             LinkedIn<!-- <i class="fab fa-linkedin-in"></i> -->
-          </a>
-        </li>
-        <li class = "social-list__item">
-          <a class="social-list__link" href="https://github.com/jerome-neo">
-            Github<!-- <i class="fab fa-github"></i> -->
-          </a>
-        </li>
-        <li class = "social-list__item">
-          <a class="social-list__link" href="Resume(CS330).pdf">
-            CV<!-- <i class="fab fa-github"></i> -->
-          </a>
-        </li>
-      </ul>
+    <section class="section container">
+      <h2 class="section__title">Featured work</h2>
+      <div class="grid">
+        <article class="card">
+          <span class="eyebrow">Applied AI / LLM</span>
+          <h3><a href="projects/agentic-graph-rag.html">Agentic Graph RAG</a></h3>
+          <p>A tool-calling agent that inspects a live knowledge-graph schema, writes and self-corrects read-only Cypher, and grounds every answer in a FalkorDB graph.</p>
+          <div class="tag-row"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">FalkorDB</span><span class="tag">LLM Tool-Calling</span></div>
+          <div class="card__links"><a href="projects/agentic-graph-rag.html">Details</a><a href="https://github.com/jerome-neo/agentic-graph-rag" target="_blank" rel="noopener">GitHub</a></div>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Data Engineering</span>
+          <h3><a href="projects/data-lakehouse.html">Self-Hosted Data Lakehouse</a></h3>
+          <p>An on-premise, Kubernetes-native Databricks alternative: governed catalog, SQL warehouses, elastic Spark, and an NL-to-SQL assistant, with no SaaS control plane.</p>
+          <div class="tag-row"><span class="tag">Kubernetes</span><span class="tag">Spark</span><span class="tag">Trino</span><span class="tag">Iceberg</span></div>
+          <div class="card__links"><a href="projects/data-lakehouse.html">Details</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
 
+  <footer class="site-footer">
+    <div class="container">
+      <a class="brand" href="index.html">Jerome <span>Neo</span></a>
+      <div class="site-footer__links">
+        <a href="mailto:jerome9to5@gmail.com">jerome9to5@gmail.com</a>
+        <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
   </footer>
-
-  <script src="index.js">
-
-  </script>
-  </body>
-
+</body>
 </html>
