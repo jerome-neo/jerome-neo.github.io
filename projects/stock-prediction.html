@@ -33,7 +33,7 @@
       <p class="eyebrow">Data Engineering</p>
       <h1 class="section__title">Stock Prediction</h1>
       <div class="tag-row" style="margin-bottom:1.5rem">
-        <span class="tag">Python</span><span class="tag">ARIMA</span><span class="tag">LSTM</span><span class="tag">Time Series</span><span class="tag">Jupyter</span>
+        <span class="tag">Python</span><span class="tag">ARIMA</span><span class="tag">LSTM</span><span class="tag">KNN</span><span class="tag">pmdarima</span><span class="tag">Keras</span>
       </div>
 
       <figure class="figure">
@@ -41,17 +41,31 @@
         <figcaption>"Time is Money: Time Series Forecasting" — the project's title slide.</figcaption>
       </figure>
 
-      <p>A machine-learning project comparing classical and deep-learning approaches to forecasting stock prices: a statistical <strong>ARIMA</strong> baseline against a recurrent <strong>LSTM</strong> network. Built as a team for NUS's CS3244 (Machine Learning).</p>
+      <p>A machine-learning project comparing three forecasting approaches on daily AAPL closing prices: a naive <strong>k-nearest-neighbours</strong> average as a sanity-check baseline, an auto-tuned <strong>ARIMA</strong> model, and a stacked <strong>LSTM</strong> network. Built as a team for NUS's CS3244 (Machine Learning), testing each model across different sampling frequencies (daily/monthly/quarterly) and training-window sizes.</p>
 
       <h2>The question</h2>
-      <p>Does a deep sequence model actually beat a well-tuned statistical baseline on noisy financial time series? ARIMA is a strong, interpretable classical forecaster; LSTMs can capture non-linear, longer-range structure. We put the two head to head on the same data to see where each wins.</p>
+      <p>Does a deep sequence model actually beat a well-tuned statistical baseline on noisy financial time series — and does a classical model's advantage depend on how far ahead it's asked to forecast? We put a naive baseline, ARIMA, and an LSTM through the same train/test split on the same data to find out.</p>
 
-      <h2>Approach</h2>
+      <h2>Baseline: KNN-style averaging</h2>
+      <p>Following the <code>tsfknn</code> approach, the baseline forecasts each test point as the average of the <var>k</var> most recent training observations, projected flat across the horizon. <var>k</var> was tuned per configuration by sweeping a validation window and minimising RMSE. Run across twelve sampling configurations (5- and 7-year daily/monthly/quarterly history, plus short 30- and 35-point windows), RMSE ranged from <strong>10.7</strong> (30 daily points) to <strong>39.9</strong> (5-year monthly) — a useful floor for judging whether the other two models were learning real structure or just regressing to the mean.</p>
+
+      <h2>ARIMA: strong one-step, weak multi-step</h2>
+      <p>An ADF test confirmed the raw close-price series was non-stationary (p ≈ 0.99), so <code>pmdarima</code>'s <code>auto_arima</code> was used to stepwise-search orders by AIC, settling on <strong>ARIMA(0,1,0)(1,0,0)[7]</strong> for 5 years of daily AAPL data — a weekly seasonal period reflecting the 5-day trading week. The split revealed a sharp distinction in how the model was evaluated:</p>
       <ul>
-        <li><strong>Baseline</strong> — fit ARIMA on the price series, selecting differencing and lag orders, as an interpretable point of comparison.</li>
-        <li><strong>Deep model</strong> — train an LSTM on windowed sequences to forecast forward prices.</li>
-        <li><strong>Evaluation</strong> — compare the models' forecasts against held-out data to weigh accuracy against complexity and interpretability.</li>
+        <li><strong>Static forecast</strong> (fit once, predict the entire test horizon) — <strong>RMSE 32.28</strong>. The model's confidence interval balloons the further out it predicts, and it can't react to anything that happens after the fit.</li>
+        <li><strong>Walk-forward forecast</strong> (predict one day ahead, then refit on the real observed value before predicting the next) — <strong>RMSE 1.50</strong>, a 20x improvement. Fed the actual close price after each step, the same model becomes a strong short-horizon forecaster.</li>
       </ul>
+      <p>The gap is the main ARIMA finding: its apparent weakness wasn't the model — it was asking a short-memory statistical model to extrapolate a year out without ever seeing ground truth in between.</p>
+
+      <h2>LSTM: stacked sequence model</h2>
+      <p>A 3-layer stacked LSTM (50 units each, dropping to a single dense output) was trained on MinMax-scaled closing prices, windowed so the previous 3 days predict the next day's close. Two different definitions of "enough training data" were tested:</p>
+      <ul>
+        <li><strong>Fixed instances</strong> — a constant 30 most-recent data points regardless of calendar range — <strong>testing RMSE 3.99</strong>.</li>
+        <li><strong>Fixed period</strong> — all daily data from 2013 onward (far more rows) — <strong>testing RMSE 2.34</strong>, noticeably better despite a much higher training RMSE, suggesting the longer history helped the model generalise rather than overfit a short recent window.</li>
+      </ul>
+
+      <h2>Takeaways</h2>
+      <p>Both ARIMA and the LSTM comfortably beat the naive KNN-style baseline. Between the two, the comparison depends on the forecasting task: the LSTM's one-day-ahead RMSE (2.3–4.0) was far more consistent than ARIMA's static multi-step forecast, but neither matched ARIMA's walk-forward RMSE of 1.50 — a reminder that a simple statistical model given real feedback at each step can be hard to beat for short-horizon prediction, while a deep model's advantage shows up when it has to generalise over a longer, less-corrected horizon.</p>
 
       <p><a class="btn btn--primary" href="https://github.com/jerome-neo/Stock-Prediction" target="_blank" rel="noopener">View on GitHub</a>
          <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>

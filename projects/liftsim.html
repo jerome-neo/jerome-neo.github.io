@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiftSim — Jerome Neo</title>
+  <meta name="description" content="LiftSim — a discrete-event elevator simulation built from real traffic data, comparing a baseline Otis algorithm against a proposed Modern Elevator Group Control System.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&family=Noto+Sans+SC:wght@700&text=じぇろーむねおジェロームネオ・梁嘉韡&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" type="image/png" href="../img/icon.png">
+  <link rel="apple-touch-icon" href="../img/icon.png">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html" aria-label="Jerome Neo"><span id="brand-cycle" class="brand-cycle" aria-hidden="true">Jerome Neo</span><span class="sr-only">Jerome Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Full-Stack</p>
+      <h1 class="section__title">LiftSim</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">Python</span><span class="tag">SimPy</span><span class="tag">Flask</span><span class="tag">Docker</span><span class="tag">R</span><span class="tag">Discrete-Event Simulation</span>
+      </div>
+
+      <p>A containerized, full-stack discrete-event simulation of the elevators in NUS's S16 building, built with an 8-person team for DSA3101. The brief: the building's existing lift dispatch left people waiting too long, so we built a simulation to measure that, and a proposed algorithm to fix it, grounded in traffic data we collected ourselves.</p>
+
+      <h2>Data collection</h2>
+      <p>Rather than assume arrival patterns, the team stationed pairs of members inside S16's elevators for timed shifts: one person logged every source-destination floor pair, the other logged arrival timestamps. The raw counts were processed in R — Gibbs sampling and MCMC approximated the day's peak periods from the timestamp data, while the source-destination counts were converted into per-period transition probabilities (off-peak, morning, afternoon, evening). Those probabilities drove a non-homogeneous Poisson process that generated realistic passengers for the simulation, via sequential inversion for each passenger's source and destination floor.</p>
+
+      <h2>Simulation architecture</h2>
+      <p>The backend is an object-oriented SimPy simulation behind a Flask API, with a façade <code>Main</code> class as the sole entry point so the API never touches internal simulation state directly. A <code>Building</code> holds the generated <code>Person</code> objects, the floors (<code>GroundFloor</code>, <code>SandwichFloor</code>, <code>TopFloor</code>, each with different button constraints), and an elevator group — swappable between the baseline and proposed algorithms without changing the rest of the system.</p>
+
+      <figure class="figure">
+        <img src="../img/LiftSimClassDiagram.png" alt="Simplified class diagram: Main simulates a Building, which keeps a PersonList of Person objects, a set of Floor subclasses, and an ElevatorSystem composed of Elevator objects." loading="lazy">
+        <figcaption>Simplified class diagram — the Building composes the floors, generated passengers, and the elevator group, all orchestrated through the Main façade.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="../img/LiftSimArchitecture.png" alt="Architecture diagram: a user's manual input or the collected data feeds the back-end simulation via a Flask API, which writes results back out to the front-end." loading="lazy">
+        <figcaption>End-to-end flow — manual input or generated traffic feeds the Flask-backed simulation, which writes results back out as JSON for the front-end to render.</figcaption>
+      </figure>
+
+      <h2>Baseline vs. proposed algorithm</h2>
+      <ul>
+        <li><strong>Otis (baseline)</strong> — a simplified model of S16's existing dispatch: elevators are statically typed as "up" (serving rising calls) or "down" (serving landing calls), reflecting the bare-minimum information a conventional system uses.</li>
+        <li><strong>ModernEGCS (proposed)</strong> — a Modern Elevator Group Control System based on Chiang &amp; Fu (2002). Each hall call is costed against every elevator; a greedy allocator assigns it to the lowest-cost car, with a load-balancing check against each elevator's fair share of calls (floors ÷ elevators) and a path-suitability check so calls aren't assigned to a car that won't actually pass that floor. Every 5 simulated minutes, unserved calls are reassigned, and idle elevators redistribute toward floors weighted by that floor's share of arrival traffic.</li>
+      </ul>
+      <p>Reinforcement learning was considered and rejected: it would have needed elevator-systems and ML expertise the team didn't have time to build, and its lack of transparency made it a poor fit for a result meant to inform real building management.</p>
+
+      <h2>Results</h2>
+      <p>Both algorithms were run on the same 100 generated passenger sets for a fair comparison. Their means were close, but ModernEGCS was <strong>more consistent</strong>: lower variance in total journey time (119.73 vs. 143.00) and substantially lower variance in the number of people served (29.99 vs. 127.24) — a tighter, more predictable passenger experience even without moving the average much.</p>
+
+      <figure class="figure">
+        <img src="../img/LiftSimResults.png" alt="Histograms over 100 simulation runs: ModernEGCS's average total journey time and number of people served are both more tightly concentrated around the mean than Otis's." loading="lazy">
+        <figcaption>100-run comparison — ModernEGCS's distributions sit tighter around the mean for both total journey time and passengers served.</figcaption>
+      </figure>
+
+      <table class="prose-table">
+        <thead>
+          <tr><th></th><th>Avg. total journey time (s)</th><th>Variance</th><th>Avg. people served</th><th>Variance</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Otis</td><td>109.26</td><td>143.00</td><td>288.71</td><td>127.24</td></tr>
+          <tr><td>ModernEGCS</td><td>108.21</td><td>119.73</td><td>289.79</td><td>29.99</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Limitations</h2>
+      <p>SimPy schedules events synchronously, which strains the realism of concurrent elevators serving passengers mid-trip; the team mitigated this by pre-generating all passengers ahead of the run rather than spawning them live. A more concurrency-accurate implementation would likely need a language built for true multithreading. The six weeks also left only a day's worth of collected traffic data, and unconfirmed assumptions about S16's real dispatch logic since the building's management was unreachable for the rest of the project.</p>
+
+      <p><a class="btn btn--primary" href="https://github.com/jerome-neo/LiftSim" target="_blank" rel="noopener">View on GitHub</a>
+         <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+          <p class="site-footer__tag">Software engineer focused on applied AI and system design.</p>
+          <span class="site-footer__loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Based in Singapore
+          </span>
+        </div>
+        <nav class="site-footer__links" aria-label="Footer">
+          <a href="mailto:jerome9to5@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span>jerome9to5@gmail.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.9H5.67v8.44h2.67zM7 8.67a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.67v-4.63c0-2.47-1.32-3.62-3.08-3.62a2.66 2.66 0 0 0-2.41 1.33v-1.14H10.2v8.44h2.66v-4.46c0-1.18.22-2.32 1.68-2.32 1.44 0 1.46 1.35 1.46 2.4v4.38h2.67z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48 0-.24-.01-.87-.02-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+            <span>GitHub</span>
+          </a>
+        </nav>
+      </div>
+      <div class="site-footer__bottom">
+        <span>&copy; <span id="footer-year">2026</span> Jerome Neo</span>
+        <a href="#">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

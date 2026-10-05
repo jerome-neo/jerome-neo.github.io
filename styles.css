@@ -175,6 +175,10 @@ a { color: inherit; }
 .prose p, .prose ul { margin-bottom: 1rem; }
 .prose ul { padding-left: 1.2rem; }
 .prose h2 { margin-top: 2rem; }
+.prose-table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: .9rem; }
+.prose-table th, .prose-table td { padding: .55rem .75rem; border: 1px solid var(--border); text-align: left; }
+.prose-table th { background: var(--surface); font-weight: 600; }
+.prose-table td:not(:first-child), .prose-table th:not(:first-child) { text-align: right; }
 
 /* Figures: video + diagrams (detail pages) */
 .figure { margin: 1.75rem 0; }

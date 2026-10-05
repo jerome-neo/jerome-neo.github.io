@@ -64,10 +64,10 @@ window.PROJECTS = [
     title: "LiftSim",
     tier: "earlier",
     category: "Full-Stack",
-    blurb: "A containerized full-stack Python application for discrete-event elevator simulation, built with an 8-member team to evaluate passenger waiting times under different dispatch strategies.",
-    tags: ["Python", "Docker", "Simulation"],
+    blurb: "A containerized full-stack Python application for discrete-event elevator simulation, built with an 8-member team on real traffic data collected in NUS's S16 building to compare a proposed dispatch algorithm against the building's baseline.",
+    tags: ["Python", "SimPy", "Flask", "Docker", "R"],
     repo: "https://github.com/jerome-neo/LiftSim",
-    detail: null,
+    detail: "projects/liftsim.html",
     link: null
   },
   {
@@ -84,8 +84,8 @@ window.PROJECTS = [
     title: "Stock Prediction",
     tier: "earlier",
     category: "Data Engineering",
-    blurb: "A comparison of ARIMA and LSTM models for stock price forecasting — a classical statistical baseline against a deep sequence model. An NUS CS3244 machine-learning project.",
-    tags: ["Python", "ARIMA", "LSTM", "Jupyter"],
+    blurb: "A comparison of a KNN-style baseline, auto-tuned ARIMA, and a stacked LSTM for AAPL stock price forecasting — including a walk-forward vs. static evaluation of ARIMA. An NUS CS3244 machine-learning project.",
+    tags: ["Python", "ARIMA", "LSTM", "KNN"],
     repo: "https://github.com/jerome-neo/Stock-Prediction",
     detail: "projects/stock-prediction.html",
     link: null
@@ -94,10 +94,10 @@ window.PROJECTS = [
     title: "Intermittent Demand Forecasting",
     tier: "earlier",
     category: "Data Engineering",
-    blurb: "A*STAR research on forecasting intermittent spare-parts demand with LSTM/GRU models and EEMD decomposition.",
-    tags: ["Python", "LSTM", "GRU", "Time Series"],
+    blurb: "A*STAR SIMTech research forecasting intermittent military spare-parts demand across 1,998 parts, comparing EEMD-LSTM and EEMD-GRU models at different window sizes.",
+    tags: ["Python", "LSTM", "GRU", "EEMD", "R"],
     repo: null,
-    detail: null,
+    detail: "projects/astar-demand-forecasting.html",
     link: "Poster.pdf"
   }
 ];

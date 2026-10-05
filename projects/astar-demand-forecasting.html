@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermittent Demand Forecasting — Jerome Neo</title>
+  <meta name="description" content="A*STAR SIMTech research on forecasting intermittent spare-parts demand with EEMD-LSTM/GRU, benchmarked across 1,998 spare parts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&family=Noto+Sans+SC:wght@700&text=じぇろーむねおジェロームネオ・梁嘉韡&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" type="image/png" href="../img/icon.png">
+  <link rel="apple-touch-icon" href="../img/icon.png">
+  <script src="../main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html" aria-label="Jerome Neo"><span id="brand-cycle" class="brand-cycle" aria-hidden="true">Jerome Neo</span><span class="sr-only">Jerome Neo</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="../index.html">Home</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../experience.html">Experience</a>
+        <a class="nav__link" href="../projects.html">Projects</a>
+        <button class="theme-toggle" aria-label="Toggle colour theme" type="button"></button>
+      </nav>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" type="button">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container prose">
+      <p class="eyebrow">Data Engineering</p>
+      <h1 class="section__title">Intermittent Demand Forecasting</h1>
+      <div class="tag-row" style="margin-bottom:1.5rem">
+        <span class="tag">Python</span><span class="tag">LSTM</span><span class="tag">GRU</span><span class="tag">EEMD</span><span class="tag">R</span><span class="tag">Time Series</span>
+      </div>
+
+      <p>A research attachment at A*STAR's Singapore Institute of Manufacturing Technology (SIMTech), forecasting demand for military spare parts (SPs) — components that are notoriously hard to forecast because most of their demand history is zero. Supervised by Dr Yuan Xue Ming, the project tested whether decomposing a demand signal before feeding it to an LSTM could out-predict a plain recurrent model, across a real dataset of 1,998 unique spare parts.</p>
+
+      <h2>Why intermittent demand is hard</h2>
+      <p>Spare-parts demand is rarely smooth: most time steps have zero demand, punctuated by occasional spikes. Classifying each part by its Average Demand Interval (ADI) and squared coefficient of variation (CV²) against the data set split into five categories:</p>
+
+      <figure class="figure">
+        <img src="../img/ASTAR-DemandTypes.jpg" alt="Pie chart of 1,998 spare parts by demand type: 810 lumpy, 757 intermittent, 401 undetermined, 23 erratic, 7 smooth." loading="lazy">
+        <figcaption>810 lumpy and 757 intermittent parts made up the bulk of the dataset — the two hardest categories to forecast, and the reason classical smooth-demand methods (plain ARIMA, SES) don't hold up here.</figcaption>
+      </figure>
+
+      <p>Before modelling, I also tried HDBSCAN and hierarchical clustering to look for hidden structure between parts. Neither was informative: HDBSCAN mostly tracked ADI monotonically rather than finding real groups, and the dendrogram just split a small slice of parts from everything else. The data's demand magnitudes vary too widely across parts for either method to find meaningful neighbours — a useful negative result that ruled out a clustering-based approach.</p>
+
+      <h2>EEMD-LSTM pipeline</h2>
+      <p>Rather than feed the raw demand series straight into an RNN, the approach follows <em>Dali &amp; Chengcheng (2021)</em>: decompose each part's demand series into Intrinsic Mode Functions (IMFs) via Ensemble Empirical Mode Decomposition, forecast each IMF independently, then reconstruct the final forecast by summing the predicted components back together.</p>
+
+      <figure class="figure">
+        <img src="../img/ASTAR-Pipeline.jpg" alt="Pipeline: spare parts demand data goes through preprocessing, then EEMD decomposition into IMFs, each forecast independently by an LSTM, then reconstructed into the final forecast demand." loading="lazy">
+        <figcaption>EEMD splits the signal into components an LSTM can learn more easily; reconstruction sums the per-component forecasts back into one series.</figcaption>
+      </figure>
+
+      <p>Three model configurations were trained on a 70/30 chronological split (May 2017 – May 2020 data), scaled with a MinMax scaler fit on the training set only:</p>
+      <ul>
+        <li><strong>LSTM A</strong> — window size 6</li>
+        <li><strong>LSTM B</strong> — window size 10</li>
+        <li><strong>GRU</strong> — window size 6, swapping the LSTM cell for a GRU</li>
+      </ul>
+      <p>All three shared the same architecture otherwise: an 8-unit RNN layer, 0.2 dropout, an 8-unit ReLU dense layer, single-step output, Adam at a 0.0001 learning rate, MSE loss, batch size 100, 20 epochs.</p>
+
+      <h2>Results</h2>
+      <p>Across four representative SPs spanning the erratic, intermittent, lumpy, and smooth categories, no single model consistently won — GRU beat both LSTM variants on the erratic part, LSTM B won on the smooth part, and all three were close on the rest. To see the real pattern, MSE and RMSE were computed across all 1,998 parts and compared as distributions:</p>
+
+      <figure class="figure">
+        <img src="../img/ASTAR-Violin.jpg" alt="Violin plots of log(MSE+1) and log(RMSE+1) across 1,998 spare parts for window size 10, window size 6, and window-6 GRU. Window 10 shows a heavier tail of high-error parts alongside more very-low-error parts; window 6 LSTM and GRU are nearly identical." loading="lazy">
+        <figcaption>Window size, not cell type, drove the difference: a larger window (10) produced more very-low-error forecasts but also a heavier tail of high-error ones, while LSTM and GRU at the same window size performed almost identically.</figcaption>
+      </figure>
+
+      <p>The takeaway: swapping LSTM for GRU made almost no difference to accuracy — a useful result on its own, since GRU trains faster with fewer parameters. The window size mattered more, but cut both ways, suggesting the right window size may depend on a part's own demand scale rather than being fixed across the whole catalogue.</p>
+
+      <h2>Conclusion &amp; future work</h2>
+      <p>The report's proposed next steps: tune window size per part rather than globally (e.g. smaller windows for high-magnitude parts), and look at Temporal Convolutional Networks as a training-time and performance upgrade over the LSTM, since TCNs don't require backpropagation through time and can train in parallel.</p>
+
+      <p><a class="btn btn--primary" href="../Poster.pdf" target="_blank" rel="noopener">View project poster</a>
+         <a class="btn btn--ghost" href="../projects.html">Back to projects</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <a class="brand" href="../index.html">Jerome <span>Neo</span></a>
+          <p class="site-footer__tag">Software engineer focused on applied AI and system design.</p>
+          <span class="site-footer__loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Based in Singapore
+          </span>
+        </div>
+        <nav class="site-footer__links" aria-label="Footer">
+          <a href="mailto:jerome9to5@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <span>jerome9to5@gmail.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/jeromeneo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34V9.9H5.67v8.44h2.67zM7 8.67a1.55 1.55 0 1 0 0-3.1 1.55 1.55 0 0 0 0 3.1zm11.34 9.67v-4.63c0-2.47-1.32-3.62-3.08-3.62a2.66 2.66 0 0 0-2.41 1.33v-1.14H10.2v8.44h2.66v-4.46c0-1.18.22-2.32 1.68-2.32 1.44 0 1.46 1.35 1.46 2.4v4.38h2.67z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/jerome-neo" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48 0-.24-.01-.87-.02-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+            <span>GitHub</span>
+          </a>
+        </nav>
+      </div>
+      <div class="site-footer__bottom">
+        <span>&copy; <span id="footer-year">2026</span> Jerome Neo</span>
+        <a href="#">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
