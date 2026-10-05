@@ -71,8 +71,23 @@ a { color: inherit; }
   border-bottom: 1px solid var(--border);
 }
 .site-header__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.brand { font-family: var(--ff-display); font-weight: 700; font-size: 1.15rem; text-decoration: none; letter-spacing: -0.02em; }
+.brand { font-family: var(--ff-display); font-weight: 700; font-size: 1.15rem; text-decoration: none; letter-spacing: -0.02em; white-space: nowrap; }
 .brand span { color: var(--accent); }
+
+.brand-cycle { display: inline-block; opacity: 1; transition: opacity .2s ease; }
+.brand-cycle[data-script="ja"] { font-family: 'Noto Sans JP', var(--ff-display); }
+.brand-cycle[data-script="zh"] { font-family: 'Noto Sans SC', var(--ff-display); }
+.brand-cycle.is-morphing { opacity: 0; }
+.brand-cycle::after {
+  content: ''; display: inline-block; width: 2px; height: .95em; margin-left: 2px;
+  background: var(--accent); vertical-align: -0.1em;
+  animation: brand-caret 1s steps(1) infinite;
+}
+.brand-cycle.is-typing::after { animation: none; opacity: 1; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@keyframes brand-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .nav { display: flex; align-items: center; gap: 1.25rem; }
 .nav__link { text-decoration: none; color: var(--muted); font-size: .95rem; transition: color .12s ease; }
 .nav__link:hover, .nav__link--active { color: var(--text); }
@@ -198,9 +213,19 @@ a { color: inherit; }
   background: #0b1018 url("img/SingaporeSkyline.jpg") center / cover no-repeat;
 }
 .about-hero::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
+  content: ""; position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(8,12,20,.35), rgba(8,12,20,.7));
 }
+
+/* Light rays: sit above the photo + darkening gradient, below the glass card. Screen blend
+   makes the rays read as light actually falling on the photo, not a flat layer.
+   Positive, explicit z-index here (unlike hero-tile's negative-z layering below) — a negative
+   z-index canvas inside this photo-backed, isolated, overflow:hidden hero failed to composite
+   in testing, so every layer in this stack is explicitly positioned and ordered instead. */
+.light-rays-container { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.light-rays-container canvas { display: block; }
+.about-hero .light-rays-container { z-index: 2; mix-blend-mode: screen; }
+.about-hero > .container { position: relative; z-index: 3; }
 .glass-card {
   max-width: 64ch;
   padding: clamp(1.5rem, 1rem + 2vw, 2.6rem);
@@ -240,6 +265,7 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .about-hero { background-position: center; }
   .glass-card, .glass-card::after { transition: none; }
+  .light-rays-container { display: none; }
 }
 
 /* Home hero tile — scroll-reactive background + cursor-aware hover */

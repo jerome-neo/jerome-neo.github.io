@@ -37,7 +37,127 @@
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
     initMotion();
+    initBrandCycle();
   });
+
+  // Header wordmark: types out each language, morphs script where relevant, then cycles.
+  function initBrandCycle() {
+    const el = document.getElementById('brand-cycle');
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const STATES = [
+      { text: 'Jerome Neo', script: 'latin', lang: 'en' },
+      { text: 'じぇろーむ・ねお', morph: 'ジェローム・ネオ', script: 'ja', lang: 'ja' },
+      { text: 'liáng jiā wěi', morph: '梁嘉韡', scriptBefore: 'latin', script: 'zh', lang: 'zh' }
+    ];
+    const TYPE_MS = 90, TYPE_JITTER = 60, DELETE_MS = 45, HOLD_MS = 1600, MORPH_HOLD_MS = 1400, PAUSE_MS = 400, MORPH_FADE_MS = 220;
+
+    let i = 0;
+
+    function setScript(script, lang) {
+      el.dataset.script = script;
+      el.lang = lang;
+    }
+
+    function type(str, cb) {
+      const chars = Array.from(str);
+      let idx = 0;
+      el.classList.add('is-typing');
+      (function step() {
+        el.textContent = chars.slice(0, idx).join('');
+        idx++;
+        if (idx <= chars.length) {
+          setTimeout(step, TYPE_MS + Math.random() * TYPE_JITTER);
+        } else {
+          el.classList.remove('is-typing');
+          cb();
+        }
+      })();
+    }
+
+    function erase(str, cb) {
+      const chars = Array.from(str);
+      let idx = chars.length;
+      el.classList.add('is-typing');
+      (function step() {
+        el.textContent = chars.slice(0, idx).join('');
+        idx--;
+        if (idx >= 0) {
+          setTimeout(step, DELETE_MS);
+        } else {
+          el.classList.remove('is-typing');
+          cb();
+        }
+      })();
+    }
+
+    function morph(to, script, lang, cb) {
+      el.classList.add('is-morphing');
+      setTimeout(() => {
+        setScript(script, lang);
+        el.textContent = to;
+        el.classList.remove('is-morphing');
+        setTimeout(cb, MORPH_FADE_MS);
+      }, MORPH_FADE_MS);
+    }
+
+    function next() {
+      i = (i + 1) % STATES.length;
+      setTimeout(run, PAUSE_MS);
+    }
+
+    function run() {
+      const state = STATES[i];
+      setScript(state.scriptBefore || state.script, state.lang);
+      type(state.text, () => {
+        if (state.morph) {
+          setTimeout(() => {
+            morph(state.morph, state.script, state.lang, () => {
+              setTimeout(() => erase(state.morph, next), MORPH_HOLD_MS);
+            });
+          }, HOLD_MS);
+        } else {
+          setTimeout(() => erase(state.text, next), HOLD_MS);
+        }
+      });
+    }
+
+    // Reserve the widest cycled width up front so the header (and theme toggle) never shifts as it types.
+    function measureMaxWidth() {
+      const probe = document.createElement('span');
+      probe.className = 'brand-cycle';
+      probe.style.position = 'absolute';
+      probe.style.visibility = 'hidden';
+      probe.style.whiteSpace = 'nowrap';
+      document.body.appendChild(probe);
+      let max = 0;
+      [
+        { text: 'Jerome Neo', script: 'latin' },
+        { text: 'じぇろーむ・ねお', script: 'ja' },
+        { text: 'ジェローム・ネオ', script: 'ja' },
+        { text: 'liáng jiā wěi', script: 'latin' },
+        { text: '梁嘉韡', script: 'zh' }
+      ].forEach(s => {
+        probe.dataset.script = s.script;
+        probe.textContent = s.text;
+        max = Math.max(max, probe.getBoundingClientRect().width);
+      });
+      document.body.removeChild(probe);
+      return max;
+    }
+
+    function start() {
+      el.style.minWidth = measureMaxWidth() + 'px';
+      run();
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(start, start);
+    } else {
+      start();
+    }
+  }
 
   // Intentional motion layer: scroll-edge blur, cursor-aware card hover, click sparks.
   function initMotion() {

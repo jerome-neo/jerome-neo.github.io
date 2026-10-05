@@ -8,15 +8,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&family=Noto+Sans+SC:wght@700&text=じぇろーむねおジェロームネオ・梁嘉韡&display=swap">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="img/icon.png">
   <link rel="apple-touch-icon" href="img/icon.png">
   <script src="main.js"></script>
+  <script type="module" src="light-rays.js"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="brand" href="index.html">Jerome <span>Neo</span></a>
+      <a class="brand" href="index.html" aria-label="Jerome Neo"><span id="brand-cycle" class="brand-cycle" aria-hidden="true">Jerome Neo</span><span class="sr-only">Jerome Neo</span></a>
       <nav class="nav" aria-label="Primary">
         <a class="nav__link" href="index.html">Home</a>
         <a class="nav__link nav__link--active" href="about.html">About</a>
@@ -30,6 +32,10 @@
 
   <main>
     <section class="about-hero">
+      <div class="light-rays-container" aria-hidden="true"
+        data-origin="top-center" data-color="#ffbf66" data-speed="0.6" data-spread="0.4"
+        data-length="1.7" data-fade="0.95" data-saturation="1.15"
+        data-mouse-influence="0.04" data-noise="0.06" data-distortion="0.05"></div>
       <div class="container">
         <div class="glass-card">
           <p class="eyebrow">About</p>
